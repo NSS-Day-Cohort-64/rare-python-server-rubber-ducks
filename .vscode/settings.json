@@ -1,0 +1,13 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#1C303A",
+        "titleBar.activeBackground": "#284351",
+        "titleBar.activeForeground": "#F9FBFC"
+    },
+    
+        "python.formatting.autopep8Path": "/home/danielcica/.pyenv/shims/autopep8",
+        "python.linting.pylintEnabled": true,
+        "python.analysis.diagnosticSeverityOverrides": {
+            "reportGeneralTypeIssues": "none"
+    }
+}

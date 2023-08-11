@@ -89,4 +89,15 @@ INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
+INSERT INTO Categories ('label') VALUES ('Sports');
+INSERT INTO Categories ('label') VALUES ('Drama');
+INSERT INTO Categories ('label') VALUES ('Weather');
+INSERT INTO Tags ('label') VALUES ('football');
+INSERT INTO Tags ('label') VALUES ('movies');
+INSERT INTO Tags ('label') VALUES ('sunny');
+
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 2, 'Pre-Season Highlights', '2023-08-09', null, 'Highlights were great, I liked it', True);
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (2, 4, 'Summer Heat', '2023-08-09', null, 'It was hot', True);
 INSERT INTO Users ('first_name', 'last_name', 'email', 'bio', 'username', 'password') VALUES ('Daniel', 'Cicalese', 'myemail@email.com', 'I made this website', 'DannyGambino', 1234);
+INSERT INTO Users ('first_name', 'last_name', 'email', 'bio', 'username', 'password') VALUES ('Will', 'Jackson', 'myemail@email.com', 'I also made this website', 'WillTheJackson', 7777);
+INSERT INTO Users ('first_name', 'last_name', 'email', 'bio', 'username', 'password') VALUES ('Samah', 'Barwari', 'myemail@email.com', 'I too made this website', 'TheOnlySamah', 1998);

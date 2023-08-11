@@ -92,6 +92,7 @@ INSERT INTO Categories ('label') VALUES ('Weather');
 INSERT INTO Tags ('label') VALUES ('football');
 INSERT INTO Tags ('label') VALUES ('movies');
 INSERT INTO Tags ('label') VALUES ('sunny');
+
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 2, 'Pre-Season Highlights', '2023-08-09', null, 'Highlights were great, I liked it', True);
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (2, 4, 'Summer Heat', '2023-08-09', null, 'It was hot', True);
 INSERT INTO Users ('first_name', 'last_name', 'email', 'bio', 'username', 'password') VALUES ('Daniel', 'Cicalese', 'myemail@email.com', 'I made this website', 'DannyGambino', 1234);

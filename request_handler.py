@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views .user_requests import create_user, login_user
+from views .category_requests import get_single_category, get_all_categories
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -49,9 +50,21 @@ class HandleRequests(BaseHTTPRequestHandler):
                          'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
+
+
     def do_GET(self):
-        """Handle Get requests to the server"""
-        pass
+        self._set_headers(200)
+        response = {}  # Default response
+
+        # Parse the URL and capture the tuple that is returned
+        (resource, id) = self.parse_url()
+        if resource == "categories":
+            if id is not None:
+                response = get_single_category(id)
+            else:
+                response = get_all_categories()
+
+        self.wfile.write(json.dumps(response).encode())
 
 
     def do_POST(self):

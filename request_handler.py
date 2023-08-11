@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import get_all_posts
 from views .user_requests import create_user, login_user
+from views import get_all_tags
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -64,6 +65,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "posts":
                 response = get_all_posts()
+
+            if resource == "tags":
+                response = get_all_tags()
 
         self.wfile.write(json.dumps(response).encode())
 

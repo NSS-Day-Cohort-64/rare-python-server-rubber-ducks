@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import get_all_posts
 from views .user_requests import create_user, login_user
+from views .category_requests import get_single_category, get_all_categories
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -49,6 +50,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                          'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
+
+
     def do_GET(self):
         """Handle Get requests to the server"""
         self._set_headers(200)
@@ -64,6 +67,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "posts":
                 response = get_all_posts()
+            if resource == "categories":
+                response = get_all_categories()
 
         self.wfile.write(json.dumps(response).encode())
 

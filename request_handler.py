@@ -3,7 +3,7 @@ import json
 from views import get_all_posts
 from views .user_requests import create_user, login_user
 from views .category_requests import get_single_category, get_all_categories
-from views import get_all_tags
+from views import get_all_tags, create_tag
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -84,12 +84,25 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = ''
         resource, _ = self.parse_url()
 
+        success = False
+
+        new_tag = None
+
         if resource == 'login':
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        if resource == "tags":
+            new_tag = create_tag(post_body)
+            success = True
 
-        self.wfile.write(response.encode())
+        if success:
+            self._set_headers(201)
+            self.wfile.write(json.dumps(new_tag).encode())
+        else:
+            self._set_headers(404)
+            error = ""       
+            self.wfile.write(json.dumps(error).encode())
 
     def do_PUT(self):
         """Handles PUT requests to the server"""

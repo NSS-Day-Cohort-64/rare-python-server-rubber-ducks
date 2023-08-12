@@ -60,8 +60,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # Parse URL and store entire tuple in a variable
         parsed = self.parse_url(self.path)
-        print("???????????????")
-        print(parsed)
         # If the path does not include a query parameter, continue with the original if block
         if '?' not in self.path:
             (resource, id) = parsed
@@ -88,21 +86,23 @@ class HandleRequests(BaseHTTPRequestHandler):
         post_body = json.loads(self.rfile.read(content_len))
         resource, _ = self.parse_url(self.path)
 
+        response = ""
+
         success = False
 
-        new_tag = None
-
         if resource == 'login':
-            login_user(post_body)
+            response = login_user(post_body)
+            success = True
         if resource == 'register':
-            create_user(post_body)
+            response = create_user(post_body)
+            success = True
         if resource == "tags":
-            new_tag = create_tag(post_body)
+            response = create_tag(post_body)
             success = True
 
         if success:
             self._set_headers(201)
-            self.wfile.write(json.dumps(new_tag).encode())
+            self.wfile.write(json.dumps(response).encode())
         else:
             self._set_headers(404)
             error = ""       

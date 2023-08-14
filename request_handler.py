@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import get_all_posts
 from views .user_requests import create_user, login_user
-from views .category_requests import get_single_category, get_all_categories
+from views .category_requests import get_single_category, get_all_categories, create_category
 from views import get_all_tags
 
 
@@ -70,11 +70,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_all_posts()
             if resource == "categories":
                 response = get_all_categories()
-
             if resource == "tags":
                 response = get_all_tags()
 
         self.wfile.write(json.dumps(response).encode())
+
+
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -84,12 +85,19 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = ''
         resource, _ = self.parse_url()
 
+
+
         if resource == 'login':
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        if resource == "categories":
+            response = create_category(post_body)
+            self.wfile.write(json.dumps(response).encode())
 
-        self.wfile.write(response.encode())
+
+
+
 
     def do_PUT(self):
         """Handles PUT requests to the server"""

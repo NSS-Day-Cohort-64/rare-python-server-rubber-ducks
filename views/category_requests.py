@@ -20,7 +20,7 @@ def get_all_categories():
             """)
 
         # Initialize an empty list to hold all animal representations
-        animals = []
+        categories = []
 
         # Convert rows of data into a Python list
         dataset = db_cursor.fetchall()
@@ -32,13 +32,12 @@ def get_all_categories():
         category = Category(row['id'], row['label'])
 
 
-
         # Add the dictionary representation of the location to the animal
 
         # Add the dictionary representation of the animal to the list
-        animals.append(category.__dict__)
+        categories.append(category.__dict__)
 
-    return animals
+    return categories
 
 
 
@@ -65,4 +64,24 @@ def get_single_category(id):
         category = Category(data['id'], data['label'])
 
         return category.__dict__
+    
+
+
+
+def create_category(new_category):
+    with sqlite3.connect("./loaddata.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Categories
+            (label)
+        VALUES
+            (?);
+        """, (new_category['label'], ))
+
+        category_id = db_cursor.lastrowid
+
+        new_category['id'] = category_id
+
+    return new_category
 

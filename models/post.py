@@ -9,3 +9,6 @@ class Post():
         self.content = content
         self.approved = approved
         self.user = None
+        self.first_name = None
+        self.last_name = None
+        self.category = None

@@ -1,32 +1,31 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views import get_all_posts
-from views .user_requests import create_user, login_user
-from views .category_requests import get_single_category, get_all_categories
-from views import get_all_tags
+from views import get_all_posts, get_posts_by_user, get_post_by_id
+from views import create_user, login_user
+from views import get_all_categories
+from views import get_all_tags, create_tag
+from urllib.parse import urlparse, parse_qs
 
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
-    def parse_url(self):
+    def parse_url(self, path):
         """Parse the url into the resource and id"""
-        path_params = self.path.split('/')
+        parsed_url = urlparse(path)
+        path_params = parsed_url.path.split('/') 
         resource = path_params[1]
-        if '?' in resource:
-            param = resource.split('?')[1]
-            resource = resource.split('?')[0]
-            pair = param.split('=')
-            key = pair[0]
-            value = pair[1]
-            return (resource, key, value)
-        else:
-            id = None
-            try:
-                id = int(path_params[2])
-            except (IndexError, ValueError):
-                pass
-            return (resource, id)
+
+        if parsed_url.query:
+            query = parse_qs(parsed_url.query)
+            return (resource, query)
+
+        pk = None
+        try:
+            pk = int(path_params[2])
+        except (IndexError, ValueError):
+            pass
+        return (resource, pk)
 
     def _set_headers(self, status):
         """Sets the status code, Content-Type and Access-Control-Allow-Origin
@@ -60,36 +59,57 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = {}
 
         # Parse URL and store entire tuple in a variable
-        parsed = self.parse_url()
-
+        parsed = self.parse_url(self.path)
         # If the path does not include a query parameter, continue with the original if block
         if '?' not in self.path:
             (resource, id) = parsed
 
             if resource == "posts":
-                response = get_all_posts()
+                if id is not None:
+                    response = get_post_by_id(id)
+                else:
+                    response = get_all_posts()
             if resource == "categories":
                 response = get_all_categories()
-
             if resource == "tags":
                 response = get_all_tags()
+            
+
+        else:
+            (resource, query) = parsed
+
+            if query.get('users') and resource == 'posts':
+                response = get_posts_by_user(query['users'][0])
 
         self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         """Make a post request to the server"""
-        self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
-        response = ''
-        resource, _ = self.parse_url()
+        resource, _ = self.parse_url(self.path)
+
+        response = ""
+
+        success = False
 
         if resource == 'login':
             response = login_user(post_body)
+            success = True
         if resource == 'register':
             response = create_user(post_body)
+            success = True
+        if resource == "tags":
+            response = create_tag(post_body)
+            success = True
 
-        self.wfile.write(response.encode())
+        if success:
+            self._set_headers(201)
+            self.wfile.write(json.dumps(response).encode())
+        else:
+            self._set_headers(404)
+            error = ""       
+            self.wfile.write(json.dumps(error).encode())
 
     def do_PUT(self):
         """Handles PUT requests to the server"""

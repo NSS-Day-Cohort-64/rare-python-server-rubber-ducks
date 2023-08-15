@@ -98,3 +98,5 @@ INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image
 INSERT INTO Users ('first_name', 'last_name', 'email', 'bio', 'username', 'password') VALUES ('Daniel', 'Cicalese', 'myemail@email.com', 'I made this website', 'DannyGambino', 1234);
 INSERT INTO Users ('first_name', 'last_name', 'email', 'bio', 'username', 'password') VALUES ('Will', 'Jackson', 'myemail@email.com', 'I also made this website', 'WillTheJackson', 7777);
 INSERT INTO Users ('first_name', 'last_name', 'email', 'bio', 'username', 'password') VALUES ('Samah', 'Barwari', 'myemail@email.com', 'I too made this website', 'TheOnlySamah', 1998);
+
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 2, 'Stonks', '2023-08-14', null, 'Gamestop? Why Not?', True)

@@ -11,3 +11,4 @@ class Post():
         self.user = None
         self.first_name = None
         self.last_name = None
+        self.category = None
